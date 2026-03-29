@@ -81,3 +81,5 @@ In Lab 7 you built one client around your own LLM loop. Here, the agent becomes 
 ## Task 4: Fix bug + cron health check
 
 ## Task 2: Deploy agent in Docker
+
+## Task 3: Observability MCP tools
