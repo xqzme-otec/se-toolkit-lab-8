@@ -1,0 +1,25 @@
+{
+  "agents": {
+    "defaults": {
+      "workspace": "./workspace",
+      "model": "coder-model",
+      "provider": "custom"
+    }
+  },
+  "providers": {
+    "custom": {
+      "apiKey": "",
+      "apiBase": ""
+    }
+  },
+  "gateway": {
+    "host": "0.0.0.0",
+    "port": 18790
+  },
+  "channels": {
+    "webchat": {
+      "enabled": true,
+      "allowFrom": ["*"]
+    }
+  }
+}
