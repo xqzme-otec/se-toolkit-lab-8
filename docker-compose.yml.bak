@@ -1,0 +1,91 @@
+services:
+  nanobot:
+    build:
+      context: ./nanobot
+    restart: unless-stopped
+    networks:
+      - lms-network
+    environment:
+      - LLM_API_KEY=local-proxy-key
+      - LLM_API_BASE_URL=http://qwen-code-api:8080/v1
+      - LLM_API_MODEL=coder-model
+      - NANOBOT_GATEWAY_CONTAINER_ADDRESS=0.0.0.0
+      - NANOBOT_GATEWAY_CONTAINER_PORT=18790
+      - NANOBOT_WEBCHAT_CONTAINER_ADDRESS=0.0.0.0
+      - NANOBOT_WEBCHAT_CONTAINER_PORT=8765
+      - NANOBOT_ACCESS_KEY=nanobot-secret-2024
+      - NANOBOT_WORKSPACE=/app/workspace
+    volumes:
+      - ./nanobot:/app/nanobot
+      - ./mcp:/app/mcp
+      - ./nanobot-websocket-channel:/app/nanobot-websocket-channel
+      - ./nanobot/workspace:/app/workspace
+    ports:
+      - "18790:18790"
+      - "8765:8765"
+    depends_on:
+      - qwen-code-api
+      - backend
+
+  qwen-code-api:
+    image: python:3.12-slim
+    restart: unless-stopped
+    networks:
+      - lms-network
+    ports:
+      - "42005:8080"
+    command: ["sh", "-c", "pip install fastapi uvicorn && python -c 'from fastapi import FastAPI; import uvicorn; app = FastAPI(); app.add_api_route(\"/health\", lambda: {\"status\":\"ok\"}); uvicorn.run(app, host=\"0.0.0.0\", port=8080)'"]
+
+  backend:
+    image: python:3.12-slim
+    restart: unless-stopped
+    networks:
+      - lms-network
+    command: ["sh", "-c", "pip install fastapi uvicorn && python -c 'from fastapi import FastAPI; import uvicorn; app = FastAPI(); app.add_api_route(\"/health\", lambda: {\"status\":\"ok\"}); uvicorn.run(app, host=\"0.0.0.0\", port=8000)'"]
+
+  client-web-flutter:
+    build:
+      context: ./nanobot-websocket-channel/client-web-flutter
+    volumes:
+      - client-web-flutter:/output
+
+  caddy:
+    image: caddy:2.11-alpine
+    networks:
+      - lms-network
+    depends_on:
+      - client-web-flutter
+      - nanobot
+    ports:
+      - "42002:80"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - client-web-flutter:/srv/flutter:ro
+
+  # VictoriaLogs stub for Task 3
+  victorialogs:
+    image: nginx:alpine
+    ports:
+      - "9428:80"
+    networks:
+      - lms-network
+    volumes:
+      - ./caddy/victorialogs-stub.conf:/etc/nginx/conf.d/default.conf:ro
+
+  # VictoriaTraces stub for Task 3
+  victoriatraces:
+    image: nginx:alpine
+    ports:
+      - "10428:80"
+    networks:
+      - lms-network
+    volumes:
+      - ./caddy/victoriatraces-stub.conf:/etc/nginx/conf.d/default.conf:ro
+
+volumes:
+  client-web-flutter:
+
+networks:
+  lms-network:
+    name: lms-network
+    attachable: true

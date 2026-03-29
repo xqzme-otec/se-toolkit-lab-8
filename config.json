@@ -1,0 +1,39 @@
+{
+  "agents": {
+    "defaults": {
+      "workspace": "./workspace",
+      "model": "coder-model",
+      "provider": "custom"
+    }
+  },
+  "providers": {
+    "custom": {
+      "apiKey": "local-proxy-key",
+      "apiBase": "http://qwen-code-api:8080/v1"
+    }
+  },
+  "gateway": {
+    "host": "0.0.0.0",
+    "port": 18790
+  },
+  "channels": {
+    "webchat": {
+      "enabled": true,
+      "allowFrom": ["*"],
+      "host": "0.0.0.0",
+      "port": 8765
+    }
+  },
+  "tools": {
+    "mcpServers": {
+      "lms": {
+        "command": "python",
+        "args": ["-m", "mcp_lms"],
+        "env": {
+          "NANOBOT_LMS_BACKEND_URL": "http://backend:8000",
+          "NANOBOT_LMS_API_KEY": "my-secret-api-key-123"
+        }
+      }
+    }
+  }
+}

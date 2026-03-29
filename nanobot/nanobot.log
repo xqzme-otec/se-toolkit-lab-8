@@ -1,0 +1,33 @@
+nohup: ignoring input
+Using config: /root/se-toolkit-lab-8/nanobot/config.json
+🐈 Starting nanobot gateway version 0.1.4.post6 on port 8765...
+2026-03-28 15:10:09.802 | DEBUG    | nanobot.channels.registry:discover_all:64 - Skipping built-in channel 'matrix': Matrix dependencies not installed. Run: pip install nanobot-ai[matrix]
+2026-03-28 15:10:10.051 | INFO     | nanobot.channels.manager:_init_channels:58 - WebChat channel enabled
+✓ Channels enabled: webchat
+✓ Heartbeat: every 1800s
+2026-03-28 15:10:10.052 | INFO     | nanobot.cron.service:_load_store:85 - Cron: jobs.json modified externally, reloading
+2026-03-28 15:10:10.052 | INFO     | nanobot.cron.service:start:202 - Cron service started with 0 jobs
+2026-03-28 15:10:10.052 | INFO     | nanobot.heartbeat.service:start:124 - Heartbeat started (every 1800s)
+2026-03-28 15:10:10.052 | INFO     | nanobot.agent.loop:run:280 - Agent loop started
+2026-03-28 15:10:10.052 | INFO     | nanobot.channels.manager:start_all:91 - Starting webchat channel...
+2026-03-28 15:10:10.053 | INFO     | nanobot.channels.manager:_dispatch_outbound:119 - Outbound dispatcher started
+[1;33m[ERROR]	(server.py:365)conn_handler	[0mopening handshake failed
+Traceback (most recent call last):
+  File "/root/se-toolkit-lab-8/venv/lib/python3.14/site-packages/websockets/asyncio/server.py", line 356, in conn_handler
+    await connection.handshake(
+    ...<3 lines>...
+    )
+  File "/root/se-toolkit-lab-8/venv/lib/python3.14/site-packages/websockets/asyncio/server.py", line 207, in handshake
+    raise self.protocol.handshake_exc
+  File "/root/se-toolkit-lab-8/venv/lib/python3.14/site-packages/websockets/server.py", line 140, in accept
+    ) = self.process_request(request)
+        ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/root/se-toolkit-lab-8/venv/lib/python3.14/site-packages/websockets/server.py", line 235, in process_request
+    raise InvalidUpgrade(
+        "Connection", ", ".join(connection) if connection else None
+    )
+websockets.exceptions.InvalidUpgrade: missing Connection header
+2026-03-28 15:10:12.075 | INFO     | nanobot.agent.loop:_process_message:425 - Processing message from webchat:7bccb3cc-fec9-402f-a7e9-2c8c749e1868: Hello
+2026-03-28 15:10:13.249 | ERROR    | nanobot.agent.loop:_run_agent_loop:273 - LLM returned error: Error: API returned empty choices.
+2026-03-28 15:10:13.251 | INFO     | nanobot.agent.loop:_process_message:479 - Response to webchat:7bccb3cc-fec9-402f-a7e9-2c8c749e1868: Error: API returned empty choices.
+2026-03-28 15:10:13.426 | DEBUG    | nanobot.agent.memory:maybe_consolidate_by_tokens:323 - Token consolidation idle webchat:7bccb3cc-fec9-402f-a7e9-2c8c749e1868: 4241/65536 via tiktoken
