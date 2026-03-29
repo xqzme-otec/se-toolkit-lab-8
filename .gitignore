@@ -21,3 +21,6 @@ tmp
 /nanobot/config.json
 /nanobot/config.resolved.json
 /nanobot/workspace/sessions/
+.env.docker.secret
+.env*
+*.secret
